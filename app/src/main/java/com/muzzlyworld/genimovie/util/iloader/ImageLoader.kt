@@ -14,7 +14,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import com.muzzlyworld.genimovie.util.iloader.target.ViewTarget
 import kotlinx.coroutines.*
-import java.lang.Exception
 import kotlin.coroutines.coroutineContext
 
 private val TAG = ImageLoader::class.java.name

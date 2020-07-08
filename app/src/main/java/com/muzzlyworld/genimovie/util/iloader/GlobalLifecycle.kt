@@ -1,6 +1,5 @@
 package com.muzzlyworld.genimovie.util.iloader
 
-import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver

@@ -6,12 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
+import com.muzzlyworld.genimovie.Injection
 import com.muzzlyworld.genimovie.R
 import com.muzzlyworld.genimovie.databinding.FragmentDetailsBinding
 import com.muzzlyworld.genimovie.model.DetailViewState
@@ -23,9 +23,15 @@ class DetailsFragment : Fragment() {
     private lateinit var binding: FragmentDetailsBinding
     private lateinit var castAdapter: CastAdapter
 
-    private val model: DetailsViewModel by viewModels()
+    private lateinit var viewModel: DetailsViewModel
 
     private val safeArgs: DetailsFragmentArgs by navArgs()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(this, Injection.provideViewModelFactory())
+            .get(DetailsViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,15 +45,15 @@ class DetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupContent()
 
-        model.detailMovieViewState.observe(viewLifecycleOwner, Observer {
+        viewModel.detailMovieViewState.observe(viewLifecycleOwner, Observer {
             render(it)
         })
 
-        model.errorMessage.observeEvent(viewLifecycleOwner){
+        viewModel.errorMessage.observeEvent(viewLifecycleOwner){
             Snackbar.make(binding.layout, it , Snackbar.LENGTH_SHORT).show()
         }
 
-        model.loadDetailMovie(safeArgs.movieId ?: throw IllegalStateException("Movie id is`nt provided"))
+        viewModel.loadDetailMovie(safeArgs.movieId ?: throw IllegalStateException("Movie id is`nt provided"))
     }
 
     private fun setupContent(){

@@ -9,15 +9,13 @@ import com.muzzlyworld.genimovie.model.Event
 import com.muzzlyworld.genimovie.model.MovieShortcuts
 import com.muzzlyworld.genimovie.model.Result
 import com.muzzlyworld.genimovie.model.SearchViewState
-import com.muzzlyworld.genimovie.network.MovieApiFactory
-import com.muzzlyworld.genimovie.repository.DefaultMovieRepository
 import com.muzzlyworld.genimovie.repository.MovieRepository
 import com.muzzlyworld.genimovie.ui.list.util.SearchMoviesPaginator
 import com.muzzlyworld.genimovie.ui.list.util.TrendingMoviesPaginator
 import kotlinx.coroutines.launch
 
 class ListViewModel(
-    movieRepository: MovieRepository = DefaultMovieRepository(MovieApiFactory.movieApi),
+    movieRepository: MovieRepository,
     private val trendingMoviesPaginator: TrendingMoviesPaginator = TrendingMoviesPaginator(movieRepository),
     private val searchMoviesPaginator: SearchMoviesPaginator = SearchMoviesPaginator(movieRepository)
 ): ViewModel(){

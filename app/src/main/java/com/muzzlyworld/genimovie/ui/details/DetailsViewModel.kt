@@ -7,13 +7,11 @@ import androidx.lifecycle.viewModelScope
 import com.muzzlyworld.genimovie.model.DetailViewState
 import com.muzzlyworld.genimovie.model.Event
 import com.muzzlyworld.genimovie.model.Result
-import com.muzzlyworld.genimovie.network.MovieApiFactory
-import com.muzzlyworld.genimovie.repository.DefaultMovieRepository
 import com.muzzlyworld.genimovie.repository.MovieRepository
 import kotlinx.coroutines.launch
 
 class DetailsViewModel(
-    private val movieRepository: MovieRepository = DefaultMovieRepository(MovieApiFactory.movieApi)
+    private val movieRepository: MovieRepository
 ): ViewModel(){
 
     private val _detailMovieViewState = MediatorLiveData<DetailViewState>().apply { value = DetailViewState.idle() }
