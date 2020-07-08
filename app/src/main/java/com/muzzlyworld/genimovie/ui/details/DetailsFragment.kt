@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -11,10 +12,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
+import com.muzzlyworld.genimovie.R
 import com.muzzlyworld.genimovie.databinding.FragmentDetailsBinding
 import com.muzzlyworld.genimovie.model.DetailViewState
 import com.muzzlyworld.genimovie.model.observeEvent
-import com.muzzlyworld.genimovie.util.loadImage
+import com.muzzlyworld.genimovie.util.iloader.fill
 
 class DetailsFragment : Fragment() {
 
@@ -49,7 +51,7 @@ class DetailsFragment : Fragment() {
     }
 
     private fun setupContent(){
-        castAdapter = CastAdapter(lifecycleScope)
+        castAdapter = CastAdapter()
         binding.cast.adapter = castAdapter
 
         binding.back.setOnClickListener { findNavController().popBackStack() }
@@ -71,7 +73,7 @@ class DetailsFragment : Fragment() {
         description.text = it.description
         directors.text = it.directorsList.joinToString(", ")
 
-        binding.poster.loadImage(it.posterUrl)
+        binding.poster.fill(it.posterUrl?.toUri(), R.drawable.ic_movie, R.drawable.ic_loader)
 
         castAdapter.cast = it.cast
     } }

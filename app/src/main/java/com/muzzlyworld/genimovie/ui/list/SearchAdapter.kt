@@ -2,15 +2,16 @@ package com.muzzlyworld.genimovie.ui.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.muzzlyworld.genimovie.R
 import com.muzzlyworld.genimovie.databinding.ItemMovieBinding
 import com.muzzlyworld.genimovie.model.MovieShortcut
-import com.muzzlyworld.genimovie.util.loadImage
-import kotlinx.coroutines.CoroutineScope
+import com.muzzlyworld.genimovie.util.iloader.fill
 
-class SearchAdapter(private val scope: CoroutineScope) : ListAdapter<MovieShortcut, SearchAdapter.MovieView>(
+class SearchAdapter : ListAdapter<MovieShortcut, SearchAdapter.MovieView>(
     DiffCallback()
 ){
 
@@ -19,33 +20,31 @@ class SearchAdapter(private val scope: CoroutineScope) : ListAdapter<MovieShortc
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieView =
         MovieView.from(
             parent,
-            onItemClickListener,
-            scope
+            onItemClickListener
         )
 
     override fun onBindViewHolder(holder: MovieView, position: Int) = holder.bind(getItem(position))
 
     class MovieView(private val binding: ItemMovieBinding,
-                    private val onItemClickListener: ((MovieShortcut) -> Unit)?,
-                    private val scope: CoroutineScope
+                    private val onItemClickListener: ((MovieShortcut) -> Unit)?
     ) : RecyclerView.ViewHolder(binding.root){
 
         fun bind(item: MovieShortcut) {
+
             binding.title.text = item.title
             binding.description.text = item.description
-            binding.poster.loadImage(item.posterUrl, scope)
+            binding.poster.fill(item.posterUrl?.toUri(), R.drawable.ic_movie, R.drawable.ic_loader)
             binding.layout.setOnClickListener { onItemClickListener?.invoke(item) }
             binding.executePendingBindings()
         }
 
         companion object {
-            fun from(parent: ViewGroup, onItemClickListener: ((MovieShortcut) -> Unit)?, scope: CoroutineScope): MovieView {
+            fun from(parent: ViewGroup, onItemClickListener: ((MovieShortcut) -> Unit)?): MovieView {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = ItemMovieBinding.inflate(layoutInflater, parent, false)
                 return MovieView(
                     binding,
-                    onItemClickListener,
-                    scope
+                    onItemClickListener
                 )
             }
         }

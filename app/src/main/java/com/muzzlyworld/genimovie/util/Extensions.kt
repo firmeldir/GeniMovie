@@ -26,13 +26,3 @@ internal inline fun <T, R> saveApiCall(
 } catch (exception: Exception) {
     Result.Error(exception)
 }
-
-internal fun ImageView.loadImage(url: String?, scope: CoroutineScope? = null) = try { (findViewTreeLifecycleOwner()?.lifecycleScope ?: scope)?.launch {
-    url?.let {
-        val bitmap = withContext(Dispatchers.IO){ BitmapFactory.decodeStream(java.net.URL(url).openStream()) }
-        this@loadImage.setImageBitmap(bitmap)
-    } ?: kotlin.run {
-        this@loadImage.setImageResource(R.drawable.ic_question)
-    }
-} }catch (e: java.lang.Exception){  }
-

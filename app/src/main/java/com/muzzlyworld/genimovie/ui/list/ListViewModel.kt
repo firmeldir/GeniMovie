@@ -1,5 +1,6 @@
 package com.muzzlyworld.genimovie.ui.list
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
@@ -46,8 +47,12 @@ class ListViewModel(
     private fun loadTrendingMovies() = viewModelScope.launch {
         setState { copy(isLoading = true) }
 
-        (trendingMoviesPaginator.loadInitialData() as? Result.Success)?.let {
-            setState { copy(isLoading = false, searchMovies = (it.data)) }
+        (trendingMoviesPaginator.loadInitialData() as? Result.Success)?.let { success ->
+            success.data.withIndex().onEach { v ->
+                val it = v.value
+                Log.i("VLAD", "@loadTrendingMovies ${v.index} ${it.id}  ${it.title}")
+            }
+            setState { copy(isLoading = false, searchMovies = (success.data)) }
         } ?: kotlin.run { setState { copy(isLoading = false) }.apply { sendErrorMessage() } }
     }
 
@@ -78,8 +83,12 @@ class ListViewModel(
     }
 
     private fun addNextMovieShortcuts(result: Result<MovieShortcuts>) = withState { state ->
-        (result as? Result.Success)?.let {
-            setState { copy(searchMovies = state.searchMovies + it.data) }
+        (result as? Result.Success)?.let { success ->
+            success.data.withIndex().onEach { v ->
+                val it = v.value
+                Log.i("VLAD", "@addNextMovieShortcuts ${v.index} ${it.id}  ${it.title}")
+            }
+            setState { copy(searchMovies = state.searchMovies + success.data) }
         } ?: kotlin.run { sendErrorMessage() }
     }
 

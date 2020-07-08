@@ -2,6 +2,7 @@ package com.muzzlyworld.genimovie.ui.list
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,7 +73,7 @@ class ListFragment : Fragment() {
     }
 
     private fun setupContent(){
-        contentAdapter = SearchAdapter(lifecycleScope)
+        contentAdapter = SearchAdapter()
             .apply { onItemClickListener = { navigateToDetail(it.id) } }
         binding.content.adapter = contentAdapter
 
