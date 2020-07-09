@@ -1,4 +1,4 @@
-package com.muzzlyworld.genimovie.ui.list
+package com.muzzlyworld.genimovie.ui.list.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,9 +11,7 @@ import com.muzzlyworld.genimovie.databinding.ItemMovieBinding
 import com.muzzlyworld.genimovie.model.MovieShortcut
 import com.muzzlyworld.genimovie.util.iloader.fill
 
-class SearchAdapter : ListAdapter<MovieShortcut, SearchAdapter.MovieView>(
-    DiffCallback()
-){
+class SearchAdapter : ListAdapter<MovieShortcut, SearchAdapter.MovieView>(MOVIE_SEARCH_COMPARATOR){
 
     var onItemClickListener: ((MovieShortcut) -> Unit)? = null
 
@@ -29,35 +27,33 @@ class SearchAdapter : ListAdapter<MovieShortcut, SearchAdapter.MovieView>(
                     private val onItemClickListener: ((MovieShortcut) -> Unit)?
     ) : RecyclerView.ViewHolder(binding.root){
 
-        fun bind(item: MovieShortcut) {
+        fun bind(item: MovieShortcut) = with(binding){
+            title.text = item.title
+            description.text = item.description
+            poster.fill(item.posterUrl?.toUri(), R.drawable.ic_movie, R.drawable.ic_loader)
+            layout.setOnClickListener { onItemClickListener?.invoke(item) }
 
-            binding.title.text = item.title
-            binding.description.text = item.description
-            binding.poster.fill(item.posterUrl?.toUri(), R.drawable.ic_movie, R.drawable.ic_loader)
-            binding.layout.setOnClickListener { onItemClickListener?.invoke(item) }
-            binding.executePendingBindings()
+            executePendingBindings()
         }
 
         companion object {
             fun from(parent: ViewGroup, onItemClickListener: ((MovieShortcut) -> Unit)?): MovieView {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = ItemMovieBinding.inflate(layoutInflater, parent, false)
-                return MovieView(
-                    binding,
-                    onItemClickListener
-                )
+                return MovieView(binding, onItemClickListener)
             }
         }
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<MovieShortcut>() {
+    companion object {
+        private val MOVIE_SEARCH_COMPARATOR = object : DiffUtil.ItemCallback<MovieShortcut>(){
+            override fun areItemsTheSame(oldItem: MovieShortcut, newItem: MovieShortcut): Boolean {
+                return oldItem.id == newItem.id
+            }
 
-        override fun areItemsTheSame(oldItem: MovieShortcut, newItem: MovieShortcut): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(oldItem: MovieShortcut, newItem: MovieShortcut): Boolean {
-            return oldItem.id == newItem.id
+            override fun areContentsTheSame(oldItem: MovieShortcut, newItem: MovieShortcut): Boolean {
+                return oldItem.id == newItem.id
+            }
         }
     }
 }

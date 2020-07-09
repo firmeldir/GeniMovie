@@ -2,7 +2,7 @@ package com.muzzlyworld.genimovie.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.muzzlyworld.genimovie.repository.MovieRepository
+import com.muzzlyworld.genimovie.data.MovieRepository
 import com.muzzlyworld.genimovie.ui.details.DetailsViewModel
 import com.muzzlyworld.genimovie.ui.list.ListViewModel
 

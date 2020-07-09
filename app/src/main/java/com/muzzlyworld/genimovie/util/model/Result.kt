@@ -1,4 +1,4 @@
-package com.muzzlyworld.genimovie.model
+package com.muzzlyworld.genimovie.util.model
 
 sealed class Result<out R> {
 
@@ -15,7 +15,7 @@ sealed class Result<out R> {
     }
 
     val succeeded
-        get() = this is Result.Success && data != null
+        get() = this is Success && data != null
 
     fun onSuccess(block: (R) -> Unit) : Success<R>? =
         (this as? Success)?.apply{ data?.let { block(it) } }

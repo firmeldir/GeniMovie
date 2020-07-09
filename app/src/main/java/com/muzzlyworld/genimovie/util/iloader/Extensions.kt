@@ -6,7 +6,7 @@ import androidx.annotation.DrawableRes
 import com.muzzlyworld.genimovie.util.iloader.target.ImageViewTarget
 
 @JvmSynthetic
-inline fun ImageView.load(
+fun ImageView.load(
     uri: Uri,
 
     @DrawableRes placeholder: Int? = null,
@@ -22,7 +22,7 @@ inline fun ImageView.load(
 )
 
 @JvmSynthetic
-inline fun ImageView.fill(
+fun ImageView.fill(
     uri: Uri?,
 
     @DrawableRes error: Int,

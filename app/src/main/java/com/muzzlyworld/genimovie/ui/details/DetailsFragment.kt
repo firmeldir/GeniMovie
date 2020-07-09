@@ -14,8 +14,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.muzzlyworld.genimovie.Injection
 import com.muzzlyworld.genimovie.R
 import com.muzzlyworld.genimovie.databinding.FragmentDetailsBinding
-import com.muzzlyworld.genimovie.model.DetailViewState
-import com.muzzlyworld.genimovie.model.observeEvent
+import com.muzzlyworld.genimovie.model.DetailsViewState
+import com.muzzlyworld.genimovie.util.model.observeEvent
 import com.muzzlyworld.genimovie.util.iloader.fill
 
 class DetailsFragment : Fragment() {
@@ -30,7 +30,7 @@ class DetailsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this, Injection.provideViewModelFactory())
-            .get(DetailsViewModel::class.java)
+            .get(DetailsViewModel   ::class.java)
     }
 
     override fun onCreateView(
@@ -45,9 +45,7 @@ class DetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupContent()
 
-        viewModel.detailMovieViewState.observe(viewLifecycleOwner, Observer {
-            render(it)
-        })
+        viewModel.viewState.observe(viewLifecycleOwner, Observer { render(it) })
 
         viewModel.errorMessage.observeEvent(viewLifecycleOwner){
             Snackbar.make(binding.layout, it , Snackbar.LENGTH_SHORT).show()
@@ -56,23 +54,19 @@ class DetailsFragment : Fragment() {
         viewModel.loadDetailMovie(safeArgs.movieId ?: throw IllegalStateException("Movie id is`nt provided"))
     }
 
-    private fun setupContent(){
+    private fun setupContent() = with(binding){
         castAdapter = CastAdapter()
-        binding.cast.adapter = castAdapter
+        cast.adapter = castAdapter
 
-        binding.back.setOnClickListener { findNavController().popBackStack() }
+        back.setOnClickListener { findNavController().popBackStack() }
     }
 
-    private fun render(state: DetailViewState){
-        renderLoading(state)
+    private fun render(state: DetailsViewState){
         renderContent(state)
+        renderLoading(state)
     }
 
-    private fun renderLoading(state: DetailViewState) = with(binding.loading){
-        if(state.isLoading) show() else hide()
-    }
-
-    private fun renderContent(state: DetailViewState) = state.detailMovie?.let { with(binding){
+    private fun renderContent(state: DetailsViewState) = state.detailMovie?.let { with(binding){
         title.text = it.title
         releaseDate.text = it.releaseDate
         genresList.text = it.genresList.joinToString(" • ")
@@ -83,4 +77,8 @@ class DetailsFragment : Fragment() {
 
         castAdapter.cast = it.cast
     } }
+
+    private fun renderLoading(state: DetailsViewState) = with(binding.loading){
+        if(state.isLoading) show() else hide()
+    }
 }

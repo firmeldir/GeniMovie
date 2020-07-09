@@ -1,4 +1,4 @@
-package com.muzzlyworld.genimovie.model
+package com.muzzlyworld.genimovie.util.model
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData

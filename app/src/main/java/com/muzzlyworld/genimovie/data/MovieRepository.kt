@@ -1,9 +1,9 @@
-package com.muzzlyworld.genimovie.repository
+package com.muzzlyworld.genimovie.data
 
 import com.muzzlyworld.genimovie.model.DetailMovie
 import com.muzzlyworld.genimovie.model.MovieShortcut
-import com.muzzlyworld.genimovie.model.Paged
-import com.muzzlyworld.genimovie.model.Result
+import com.muzzlyworld.genimovie.util.model.Paged
+import com.muzzlyworld.genimovie.util.model.Result
 
 interface MovieRepository {
 

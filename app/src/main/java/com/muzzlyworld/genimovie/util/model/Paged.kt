@@ -1,4 +1,4 @@
-package com.muzzlyworld.genimovie.model
+package com.muzzlyworld.genimovie.util.model
 
 data class Paged<out T>(
     val data: List<T>,

@@ -1,13 +1,13 @@
 package com.muzzlyworld.genimovie.model
 
-data class DetailViewState(
+data class DetailsViewState(
     val detailMovie: DetailMovie?,
     val isLoading: Boolean
-){
+) : ViewState{
 
     companion object{
         fun idle() =
-            DetailViewState(
+            DetailsViewState(
                 detailMovie = null,
                 isLoading = false
             )

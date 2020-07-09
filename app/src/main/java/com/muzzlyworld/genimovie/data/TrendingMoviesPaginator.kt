@@ -1,10 +1,8 @@
-package com.muzzlyworld.genimovie.ui.list.util
+package com.muzzlyworld.genimovie.data
 
 import com.muzzlyworld.genimovie.model.MovieShortcut
-import com.muzzlyworld.genimovie.model.Paged
-import com.muzzlyworld.genimovie.model.Result
-import com.muzzlyworld.genimovie.repository.MovieRepository
-import com.muzzlyworld.genimovie.util.PagePaginator
+import com.muzzlyworld.genimovie.util.model.Paged
+import com.muzzlyworld.genimovie.util.model.Result
 
 class TrendingMoviesPaginator(
     private val movieRepository: MovieRepository

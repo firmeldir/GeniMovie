@@ -4,7 +4,7 @@ data class SearchViewState(
     val searchMovies: MovieShortcuts,
     val isLoading: Boolean,
     val searchingQuery: String?     //Null if not searching(popular)
-){
+) : ViewState{
 
     val isSearching: Boolean get() = searchingQuery != null
 

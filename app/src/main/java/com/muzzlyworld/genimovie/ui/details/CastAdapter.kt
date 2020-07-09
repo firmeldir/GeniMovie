@@ -28,8 +28,9 @@ class CastAdapter() : RecyclerView.Adapter<CastAdapter.CastView>(){
         fun bind(item: ParticipantActor) = with(binding){
             name.text = item.name
             character.text = item.character
-            binding.image.fill(item.profileUrl?.toUri(), R.drawable.ic_anonymous, R.drawable.ic_loader)
-            binding.executePendingBindings()
+            image.fill(item.profileUrl?.toUri(), R.drawable.ic_anonymous, R.drawable.ic_loader)
+
+            executePendingBindings()
         }
 
         companion object {

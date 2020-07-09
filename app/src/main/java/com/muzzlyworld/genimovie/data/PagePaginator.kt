@@ -1,7 +1,7 @@
-package com.muzzlyworld.genimovie.util
+package com.muzzlyworld.genimovie.data
 
-import com.muzzlyworld.genimovie.model.Paged
-import com.muzzlyworld.genimovie.model.Result
+import com.muzzlyworld.genimovie.util.model.Paged
+import com.muzzlyworld.genimovie.util.model.Result
 import kotlinx.coroutines.Job
 import kotlin.coroutines.coroutineContext
 
@@ -13,17 +13,19 @@ abstract class PagePaginator<V : Any> {
     private var page: Int? = null
 
     suspend fun loadInitialData(): Result<List<V>> {
+        loadInitialDataJob?.cancel()
         loadNextDataJob?.cancel()
         loadInitialDataJob = coroutineContext[Job]
 
-        return loadInitial().onSuccess { setPaginationPage(it) }?.
-        let { Result.Success(it.data.data) } ?: Result.Error(Exception(""))
+        return loadInitial().onSuccess { setPaginationPage(it) }
+            ?.let { Result.Success(it.data.data) } ?: Result.Error(Exception(""))
     }
 
     suspend fun loadNextData(): Result<List<V>> {
         kotlin.runCatching { loadInitialDataJob?.join() }
         requireNotNull(page) { "All data loaded" }
 
+        loadNextDataJob?.cancel()
         loadNextDataJob = coroutineContext[Job]
 
         return loadNext(page!!).onSuccess { setPaginationPage(it) }

@@ -5,51 +5,45 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.muzzlyworld.genimovie.model.Event
+import com.muzzlyworld.genimovie.util.model.Event
 import com.muzzlyworld.genimovie.model.MovieShortcuts
-import com.muzzlyworld.genimovie.model.Result
+import com.muzzlyworld.genimovie.util.model.Result
 import com.muzzlyworld.genimovie.model.SearchViewState
-import com.muzzlyworld.genimovie.repository.MovieRepository
-import com.muzzlyworld.genimovie.ui.list.util.SearchMoviesPaginator
-import com.muzzlyworld.genimovie.ui.list.util.TrendingMoviesPaginator
+import com.muzzlyworld.genimovie.data.MovieRepository
+import com.muzzlyworld.genimovie.data.SearchMoviesPaginator
+import com.muzzlyworld.genimovie.data.TrendingMoviesPaginator
+import com.muzzlyworld.genimovie.ui.StatefulViewModel
 import kotlinx.coroutines.launch
 
 class ListViewModel(
     movieRepository: MovieRepository,
+
     private val trendingMoviesPaginator: TrendingMoviesPaginator = TrendingMoviesPaginator(movieRepository),
     private val searchMoviesPaginator: SearchMoviesPaginator = SearchMoviesPaginator(movieRepository)
-): ViewModel(){
+): StatefulViewModel<SearchViewState>(){
 
-    private val _searchViewState = MediatorLiveData<SearchViewState>().apply { value = SearchViewState.idle() }
-    val searchViewState: LiveData<SearchViewState> get() = _searchViewState
+    init { loadTrendingMovies() }
 
     private val _keyboardShowAction = MediatorLiveData<Event<Boolean>>()
     val keyboardShowAction: LiveData<Event<Boolean>> get() = _keyboardShowAction
 
-    private val _errorMessage = MediatorLiveData<Event<String>>()
-    val errorMessage: LiveData<Event<String>> get() = _errorMessage
+    override fun idleViewState(): SearchViewState = SearchViewState.idle()
+
 
     fun onSearchClick() = withState {
         if(it.isSearching){
             _keyboardShowAction.value = Event(false)
+
             setState { copy(searchingQuery = null) }
             loadTrendingMovies()
         }
         else _keyboardShowAction.value = Event(true)
     }
 
-    init {
-        loadTrendingMovies()
-    }
-
     private fun loadTrendingMovies() = viewModelScope.launch {
         setState { copy(isLoading = true) }
 
         (trendingMoviesPaginator.loadInitialData() as? Result.Success)?.let { success ->
-            success.data.withIndex().onEach { v ->
-                val it = v.value
-                Log.i("VLAD", "@loadTrendingMovies ${v.index} ${it.id}  ${it.title}")
-            }
             setState { copy(isLoading = false, searchMovies = (success.data)) }
         } ?: kotlin.run { setState { copy(isLoading = false) }.apply { sendErrorMessage() } }
     }
@@ -59,6 +53,7 @@ class ListViewModel(
 
         viewModelScope.launch {
             setState { copy(isLoading = true, searchingQuery = query) }
+
             (searchMoviesPaginator.loadInitialWithQuery(query) as? Result.Success)?.let {
                 setState { copy(isLoading = false, searchMovies = (it.data)) }
             } ?: kotlin.run { setState { copy(isLoading = false) }.apply { sendErrorMessage() } }
@@ -82,21 +77,10 @@ class ListViewModel(
 
     private fun addNextMovieShortcuts(result: Result<MovieShortcuts>) = withState { state ->
         (result as? Result.Success)?.let { success ->
-            success.data.withIndex().onEach { v ->
-                val it = v.value
-                Log.i("VLAD", "@addNextMovieShortcuts ${v.index} ${it.id}  ${it.title}")
-            }
             setState { copy(searchMovies = state.searchMovies + success.data) }
         } ?: kotlin.run { sendErrorMessage() }
     }
 
-    private fun withState(block: (state: SearchViewState) -> Unit){
-        block(_searchViewState.value!!)
-    }
-
-    private fun setState(reducer: SearchViewState.() -> SearchViewState){
-        _searchViewState.value = reducer(_searchViewState.value!!)
-    }
 
     private fun checkIfTrendingMoviesCanBeLoaded(
         state: SearchViewState,
@@ -107,6 +91,4 @@ class ListViewModel(
         state: SearchViewState,
         lastVisibleItemPosition: Int
     ) = (lastVisibleItemPosition >= state.searchMovies.size - 2) && !(searchMoviesPaginator.isAllDataLoaded())
-
-    private fun sendErrorMessage(){ _errorMessage.value = Event("Unknown Error. Check Internet connection" ) }
 }

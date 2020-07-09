@@ -18,7 +18,8 @@ import com.muzzlyworld.genimovie.Injection
 import com.muzzlyworld.genimovie.R
 import com.muzzlyworld.genimovie.databinding.FragmentListBinding
 import com.muzzlyworld.genimovie.model.SearchViewState
-import com.muzzlyworld.genimovie.model.observeEvent
+import com.muzzlyworld.genimovie.util.model.observeEvent
+import com.muzzlyworld.genimovie.ui.list.adapter.SearchAdapter
 import com.muzzlyworld.genimovie.util.DebounceTextWatcher
 
 //Todo : Make scrollListener depend from lifecycle scope
@@ -29,12 +30,6 @@ class ListFragment : Fragment() {
     private lateinit var contentAdapter: SearchAdapter
 
     private lateinit var viewModel: ListViewModel
-
-    private val scrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-            viewModel.loadNextMovies((binding.content.layoutManager as LinearLayoutManager).findLastVisibleItemPosition())
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,16 +50,20 @@ class ListFragment : Fragment() {
         setupContent()
         setupQuerying()
 
-        viewModel.searchViewState.observe(viewLifecycleOwner, Observer {
-            render(it)
-        })
+        viewModel.viewState.observe(viewLifecycleOwner, Observer { render(it) })
+
+        viewModel.errorMessage.observeEvent(viewLifecycleOwner){
+            Snackbar.make(binding.layout, it , Snackbar.LENGTH_SHORT).show()
+        }
 
         viewModel.keyboardShowAction.observeEvent(viewLifecycleOwner){
             changeFocusEditText(it)
         }
+    }
 
-        viewModel.errorMessage.observeEvent(viewLifecycleOwner){
-            Snackbar.make(binding.layout, it , Snackbar.LENGTH_SHORT).show()
+    private val scrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            viewModel.loadNextMovies((binding.content.layoutManager as LinearLayoutManager).findLastVisibleItemPosition())
         }
     }
 
@@ -78,29 +77,32 @@ class ListFragment : Fragment() {
         binding.content.removeOnScrollListener(scrollListener)
     }
 
-    private fun setupContent(){
+    private fun setupContent() = with(binding){
         contentAdapter = SearchAdapter()
             .apply { onItemClickListener = { navigateToDetail(it.id) } }
-        binding.content.adapter = contentAdapter
+        content.adapter = contentAdapter
 
-        binding.search.setOnClickListener { viewModel.onSearchClick() }
+        search.setOnClickListener { viewModel.onSearchClick() }
     }
 
     private fun setupQuerying(){
-        binding.searchInput.addTextChangedListener(DebounceTextWatcher(
-            lifecycleScope) { viewModel.searchForQuery(it) }
-        )
+        binding.searchInput.addTextChangedListener(DebounceTextWatcher(lifecycleScope) {
+            viewModel.searchForQuery(it)
+        })
     }
 
     private fun render(state: SearchViewState){
         renderContent(state)
+        renderLoading(state)
         renderButton(state)
     }
 
     private fun renderContent(state: SearchViewState){
-        with(binding.loading){ if(state.isLoading && !state.isSearching) show() else hide() }
-
         contentAdapter.submitList(state.searchMovies)
+    }
+
+    private fun renderLoading(state: SearchViewState) = with(binding.loading){
+        if(state.isLoading && !state.isSearching) show() else hide()
     }
 
     private fun renderButton(state: SearchViewState) {

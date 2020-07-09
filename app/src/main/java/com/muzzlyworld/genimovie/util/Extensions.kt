@@ -1,6 +1,6 @@
 package com.muzzlyworld.genimovie.util
 
-import com.muzzlyworld.genimovie.model.Result
+import com.muzzlyworld.genimovie.util.model.Result
 import retrofit2.Response
 
 internal inline fun <T, R> saveApiCall(
