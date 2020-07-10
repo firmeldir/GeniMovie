@@ -9,7 +9,11 @@
         android:label="ListFragment" >
         <action
             android:id="@+id/action_listFragment_to_detailsFragment"
-            app:destination="@id/detailsFragment" />
+            app:destination="@id/detailsFragment"
+            app:enterAnim="@anim/anim_slide_l"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/anim_slide_r"
+            app:popExitAnim="@anim/fragment_fade_exit"/>
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"

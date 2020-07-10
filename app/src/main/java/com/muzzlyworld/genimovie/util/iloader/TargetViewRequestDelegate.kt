@@ -8,19 +8,19 @@ import kotlinx.coroutines.Job
 
 internal class TargetViewRequestDelegate(
     private val imageLoader: ImageLoader,
-    private val request: ImageLoader.Request,
+    private val imageRequest: ImageRequest,
     private val lifecycle: Lifecycle,
     private val job: Job
 ) : DefaultLifecycleObserver {
 
     fun restart() {
-        imageLoader.process(request)
+        imageLoader.process(imageRequest)
     }
 
     fun dispose() {
         job.cancel()
-        if (request.target is LifecycleObserver) {
-            lifecycle.removeObserver(request.target)
+        if (imageRequest.target is LifecycleObserver) {
+            lifecycle.removeObserver(imageRequest.target)
         }
         lifecycle.removeObserver(this)
     }

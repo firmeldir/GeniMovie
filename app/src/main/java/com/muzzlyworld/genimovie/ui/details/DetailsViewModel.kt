@@ -1,13 +1,10 @@
 package com.muzzlyworld.genimovie.ui.details
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
-import com.muzzlyworld.genimovie.model.DetailsViewState
-import com.muzzlyworld.genimovie.util.model.Event
-import com.muzzlyworld.genimovie.util.model.Result
 import com.muzzlyworld.genimovie.data.MovieRepository
+import com.muzzlyworld.genimovie.model.DetailsViewState
 import com.muzzlyworld.genimovie.ui.StatefulViewModel
+import com.muzzlyworld.genimovie.util.model.Result
 import kotlinx.coroutines.launch
 
 class DetailsViewModel(

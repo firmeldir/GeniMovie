@@ -2,8 +2,8 @@ package com.muzzlyworld.genimovie.network.model
 
 import com.muzzlyworld.genimovie.model.MovieShortcut
 import com.muzzlyworld.genimovie.model.MovieShortcuts
-import com.muzzlyworld.genimovie.util.model.Paged
 import com.muzzlyworld.genimovie.network.IMAGE_URL_HEADER
+import com.muzzlyworld.genimovie.util.model.Paged
 import com.squareup.moshi.Json
 
 data class MovieApiResponse(

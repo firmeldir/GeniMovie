@@ -18,9 +18,9 @@ import com.muzzlyworld.genimovie.Injection
 import com.muzzlyworld.genimovie.R
 import com.muzzlyworld.genimovie.databinding.FragmentListBinding
 import com.muzzlyworld.genimovie.model.SearchViewState
-import com.muzzlyworld.genimovie.util.model.observeEvent
 import com.muzzlyworld.genimovie.ui.list.adapter.SearchAdapter
 import com.muzzlyworld.genimovie.util.DebounceTextWatcher
+import com.muzzlyworld.genimovie.util.model.observeEvent
 
 //Todo : Make scrollListener depend from lifecycle scope
 

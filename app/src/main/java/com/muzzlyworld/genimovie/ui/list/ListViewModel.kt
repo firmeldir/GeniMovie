@@ -1,18 +1,16 @@
 package com.muzzlyworld.genimovie.ui.list
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.muzzlyworld.genimovie.util.model.Event
-import com.muzzlyworld.genimovie.model.MovieShortcuts
-import com.muzzlyworld.genimovie.util.model.Result
-import com.muzzlyworld.genimovie.model.SearchViewState
 import com.muzzlyworld.genimovie.data.MovieRepository
 import com.muzzlyworld.genimovie.data.SearchMoviesPaginator
 import com.muzzlyworld.genimovie.data.TrendingMoviesPaginator
+import com.muzzlyworld.genimovie.model.MovieShortcuts
+import com.muzzlyworld.genimovie.model.SearchViewState
 import com.muzzlyworld.genimovie.ui.StatefulViewModel
+import com.muzzlyworld.genimovie.util.model.Event
+import com.muzzlyworld.genimovie.util.model.Result
 import kotlinx.coroutines.launch
 
 class ListViewModel(

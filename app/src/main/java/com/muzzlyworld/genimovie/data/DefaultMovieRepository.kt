@@ -2,11 +2,11 @@ package com.muzzlyworld.genimovie.data
 
 import com.muzzlyworld.genimovie.model.DetailMovie
 import com.muzzlyworld.genimovie.model.MovieShortcut
-import com.muzzlyworld.genimovie.util.model.Paged
-import com.muzzlyworld.genimovie.util.model.Result
 import com.muzzlyworld.genimovie.network.MovieApi
 import com.muzzlyworld.genimovie.network.model.DetailMovieResponse
 import com.muzzlyworld.genimovie.network.model.MovieApiResponse
+import com.muzzlyworld.genimovie.util.model.Paged
+import com.muzzlyworld.genimovie.util.model.Result
 import com.muzzlyworld.genimovie.util.saveApiCall
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

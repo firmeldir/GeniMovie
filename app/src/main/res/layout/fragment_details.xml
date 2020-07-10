@@ -16,25 +16,40 @@
                 android:id="@+id/poster"
                 android:layout_width="0dp"
                 android:layout_height="300dp"
+                android:contentDescription="@string/movie_poster"
                 android:scaleType="centerCrop"
                 app:layout_constraintDimensionRatio="768:1024"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
+            <ImageView
+                android:id="@+id/blur"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:contentDescription="@string/movie_blur"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="@+id/poster"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/poster"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
             <View
                 android:id="@+id/view"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginTop="@dimen/spacing_normal"
                 android:background="@color/grey"
-                app:layout_constraintBottom_toTopOf="@+id/textView2"
                 app:layout_constraintTop_toBottomOf="@+id/description" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/back"
                 style="@style/Widget.GeniMovie.IconButton"
                 android:layout_gravity="start"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/spacing_normal"
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:gravity="center"
                 app:icon="@drawable/ic_back_arrow"
@@ -42,14 +57,25 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:background="@color/transWhite"
+                app:layout_constraintBottom_toBottomOf="@+id/blur"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/poster"
+                app:layout_constraintTop_toTopOf="@+id/blur" />
+
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_micro"
-                android:layout_marginEnd="@dimen/spacing_micro"
+                android:layout_margin="@dimen/spacing_micro"
                 android:ellipsize="end"
                 android:gravity="center"
+                android:textStyle="bold"
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 app:layout_constraintBottom_toTopOf="@+id/releaseDate"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -78,9 +104,7 @@
                 android:id="@+id/genresList"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_micro"
-                android:layout_marginTop="@dimen/spacing_micro"
-                android:layout_marginEnd="@dimen/spacing_micro"
+                android:layout_margin="@dimen/spacing_micro"
                 android:gravity="center"
                 android:textColor="@android:color/black"
                 app:layout_constraintBottom_toTopOf="@+id/description"
@@ -94,8 +118,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_micro"
-                android:layout_marginTop="16dp"
                 android:layout_marginEnd="@dimen/spacing_micro"
+                android:layout_marginTop="@dimen/spacing_macro"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/poster" />
@@ -104,19 +128,19 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
                 android:text="@string/directors"
                 android:textColor="@android:color/black"
+                android:layout_marginStart="@dimen/spacing_macro"
+                android:layout_marginTop="@dimen/spacing_normal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/description" />
+                app:layout_constraintTop_toBottomOf="@+id/view" />
 
             <TextView
                 android:id="@+id/directors"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginStart="@dimen/spacing_macro"
+                android:layout_marginEnd="@dimen/spacing_macro"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView2"
                 app:layout_constraintTop_toTopOf="@+id/textView2" />
@@ -125,9 +149,9 @@
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:text="@string/cast"
                 android:textColor="@android:color/black"
+                android:layout_marginTop="@dimen/spacing_macro"
                 app:layout_constraintStart_toStartOf="@+id/textView2"
                 app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
@@ -135,11 +159,11 @@
                 android:id="@+id/cast"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_micro"
-                android:background="#FFFFFF"
+                android:background="@android:color/white"
                 android:overScrollMode="never"
                 android:scrollbars="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_marginTop="@dimen/spacing_normal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />

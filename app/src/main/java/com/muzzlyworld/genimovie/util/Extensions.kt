@@ -3,6 +3,7 @@ package com.muzzlyworld.genimovie.util
 import com.muzzlyworld.genimovie.util.model.Result
 import retrofit2.Response
 
+
 internal inline fun <T, R> saveApiCall(
     call: () -> Response<T>,
     transform: (T) -> R
@@ -15,3 +16,5 @@ internal inline fun <T, R> saveApiCall(
 } catch (exception: Exception) {
     Result.Error(exception)
 }
+
+

@@ -15,8 +15,10 @@ import com.muzzlyworld.genimovie.Injection
 import com.muzzlyworld.genimovie.R
 import com.muzzlyworld.genimovie.databinding.FragmentDetailsBinding
 import com.muzzlyworld.genimovie.model.DetailsViewState
-import com.muzzlyworld.genimovie.util.model.observeEvent
+import com.muzzlyworld.genimovie.util.iloader.ExtraLoaderOptions
 import com.muzzlyworld.genimovie.util.iloader.fill
+import com.muzzlyworld.genimovie.util.iloader.load
+import com.muzzlyworld.genimovie.util.model.observeEvent
 
 class DetailsFragment : Fragment() {
 
@@ -74,6 +76,9 @@ class DetailsFragment : Fragment() {
         directors.text = it.directorsList.joinToString(", ")
 
         binding.poster.fill(it.posterUrl?.toUri(), R.drawable.ic_movie, R.drawable.ic_loader)
+        it.posterUrl?.toUri()?.let {
+            binding.blur.load(uri = it, extraOptions = listOf(ExtraLoaderOptions.Blur) )
+        }
 
         castAdapter.cast = it.cast
     } }

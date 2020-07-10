@@ -10,14 +10,18 @@ fun ImageView.load(
     uri: Uri,
 
     @DrawableRes placeholder: Int? = null,
-    @DrawableRes error: Int? = null
+    @DrawableRes error: Int? = null,
+
+    extraOptions: List<ExtraLoaderOptions> = emptyList()
 ) = ImageLoader.get(context).process(
-    ImageLoader.Request(
+    ImageRequest(
         imageUri = uri,
         target = ImageViewTarget(this),
 
         placeholder = placeholder,
-        error = error
+        error = error,
+
+        extraOptions = extraOptions
     )
 )
 
@@ -26,7 +30,9 @@ fun ImageView.fill(
     uri: Uri?,
 
     @DrawableRes error: Int,
-    @DrawableRes placeholder: Int? = null
-) = uri?.let { load(uri, placeholder, error) } ?: kotlin.run {
+    @DrawableRes placeholder: Int? = null,
+
+    extraOptions: List<ExtraLoaderOptions> = emptyList()
+) = uri?.let { load(uri, placeholder, error, extraOptions) } ?: kotlin.run {
     this.setImageResource(error)
 }

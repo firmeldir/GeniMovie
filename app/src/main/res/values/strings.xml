@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">GeniMovie</string>
+
     <string name="cast">Cast:</string>
     <string name="directors">Directors:</string>
+
+    <string name="movie_poster">Movie poster</string>
+    <string name="movie_blur">Movie blur</string>
 </resources>
